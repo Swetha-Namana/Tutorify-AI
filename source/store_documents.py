@@ -9,8 +9,8 @@ from lecture_notes import download_lecture_notes  # Import the function
 load_dotenv()
 
 def store_documents():
-    pdf_directory = "C:/Users/sweth/PycharmProjects/Tutorify-AI(git)/source/lecture notes"  # Adjust this path based on where your PDFs are located
-    persist_directory = "C:/Users/sweth/PycharmProjects/Tutorify-AI(git)/course_content"
+    pdf_directory = "C:/Users/sweth/Tutorify-AI(git)/source/lecture notes"  # Adjust this path based on where your PDFs are located
+    persist_directory = "C:/Users/sweth/Tutorify-AI(git)/course_content"
 
     if not os.path.exists(pdf_directory):
         raise FileNotFoundError(f"Directory '{pdf_directory}' does not exist. Please check the path.")

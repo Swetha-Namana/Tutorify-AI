@@ -16,7 +16,7 @@ def create_qa_chain():
     )
 
     # Define the directory where the vector store is persisted
-    persist_directory = "C:/Users/sweth/PycharmProjects/Tutorify-AI(git)/course_content"
+    persist_directory = "C:/Users/sweth/Tutorify-AI(git)/course_content"
 
     # Check if the vector store exists
     if os.path.exists(persist_directory) and os.listdir(persist_directory):

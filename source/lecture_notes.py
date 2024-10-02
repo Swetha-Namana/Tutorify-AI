@@ -26,5 +26,5 @@ def download_lecture_notes(save_dir="lecture notes"):
         print(f"Downloaded: {file_name}")
 
 # Only call the function when running this script directly, not when imported
-if __name__ == "__main__":
+if _name_ == "_main_":
     download_lecture_notes()
