@@ -1,0 +1,6 @@
+openai
+requests
+chromadb
+gradio  # or streamlit depending on the front-end
+python-dotenv
+langchain_community
