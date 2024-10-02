@@ -33,7 +33,7 @@ Additionally, you'll need to set up an .env file in your project directory with 
 ```bash
 OPENAI_API_KEY=your_openai_api_key
 ```
-Project Structure
+##Project Structure
 ```bash
 
 ├── lecture_notes.py            # Script to download lecture notes
@@ -43,49 +43,54 @@ Project Structure
 ├── .env                        # Contains environment variables (e.g., OpenAI API key)
 ```
 
-How to Run the Project
+#3How to Run the Project
 1. Clone the repository:
 
 ```bash
 git clone https://github.com/your-username/your-repo.git
 ```
-Set up the environment:
+2. Set up the environment:
 
-2. Ensure your .env file is in place with your OpenAI API key.
+  - Ensure your .env file is in place with your OpenAI API key.
 
 3. Download Lecture Notes:
 
-Run the lecture_notes.py script to download and save the lecture notes:
+  - Run the lecture_notes.py script to download and save the lecture notes:
 
 ```bash
 python lecture_notes.py
 ```
 4. Store Lecture Notes in Vector Database:
 
-Ingest and store the downloaded lecture notes in the Chroma vector database:
+  - Ingest and store the downloaded lecture notes in the Chroma vector database:
 
 ```bash
 python storedocuments.py
 ```
 5. Launch the Chatbot:
 
-Start the Gradio web interface for the chatbot:
+  - Start the Gradio web interface for the chatbot:
 
 ```bash
 python gradio.py
 ```
-This will open a local web interface where you can interact with the chatbot.
+-This will open a local web interface where you can interact with the chatbot.
 
-Testing the Chatbot
-Sample Query: Try asking the chatbot a question like:
+##Testing the Chatbot
+- ###Sample Query: Try asking the chatbot a question like:
 
 ```bash
 What is a universal function approximator?
 ```
 Comprehensive Testing: Test the chatbot with various questions related to the AI course lecture notes to evaluate its performance.
 
-Future Improvements
+##Future Improvements
 - Message History Storage: Implement a feature to store user conversations and maintain chat history across sessions.
 - Streamlit Interface: Optionally implement a Streamlit interface for a different user experience.
 - Additional Questions: Extend the question set to improve chatbot coverage of course content.
 - Error Handling: Improve the error handling for document processing and vector storage
+
+##Acknowledgments
+- UC Berkeley for the CS188 course materials
+- OpenAI for providing the GPT-4 model and embeddings API
+- LangChain for simplifying document management and vector storage
