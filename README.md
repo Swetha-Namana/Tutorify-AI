@@ -33,7 +33,7 @@ Additionally, you'll need to set up an .env file in your project directory with 
 ```bash
 OPENAI_API_KEY=your_openai_api_key
 ```
-##Project Structure
+## Project Structure
 ```bash
 
 ├── lecture_notes.py            # Script to download lecture notes
@@ -43,7 +43,7 @@ OPENAI_API_KEY=your_openai_api_key
 ├── .env                        # Contains environment variables (e.g., OpenAI API key)
 ```
 
-#3How to Run the Project
+## How to Run the Project
 1. Clone the repository:
 
 ```bash
@@ -76,21 +76,21 @@ python gradio.py
 ```
 -This will open a local web interface where you can interact with the chatbot.
 
-##Testing the Chatbot
-- ###Sample Query: Try asking the chatbot a question like:
+## Testing the Chatbot
+- ### Sample Query: Try asking the chatbot a question like:
 
 ```bash
 What is a universal function approximator?
 ```
 Comprehensive Testing: Test the chatbot with various questions related to the AI course lecture notes to evaluate its performance.
 
-##Future Improvements
+## Future Improvements
 - Message History Storage: Implement a feature to store user conversations and maintain chat history across sessions.
 - Streamlit Interface: Optionally implement a Streamlit interface for a different user experience.
 - Additional Questions: Extend the question set to improve chatbot coverage of course content.
 - Error Handling: Improve the error handling for document processing and vector storage
 
-##Acknowledgments
+## Acknowledgments
 - UC Berkeley for the CS188 course materials
 - OpenAI for providing the GPT-4 model and embeddings API
 - LangChain for simplifying document management and vector storage
