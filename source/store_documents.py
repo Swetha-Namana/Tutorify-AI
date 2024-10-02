@@ -7,27 +7,24 @@ import langchain_openai
 from lecture_notes import download_lecture_notes  # Import the function
 
 load_dotenv()
+
 def store_documents():
-    # Directory containing all the downloaded PDFs
-    pdf_directory = "C:/Users/sweth/Tutorify-AI/source/lecture notes"  # Adjust this path based on where your PDFs are located
+    pdf_directory = "C:/Users/sweth/PycharmProjects/Tutorify-AI(git)/source/lecture notes"  # Adjust this path based on where your PDFs are located
+    persist_directory = "C:/Users/sweth/PycharmProjects/Tutorify-AI(git)/course_content"
 
     if not os.path.exists(pdf_directory):
         raise FileNotFoundError(f"Directory '{pdf_directory}' does not exist. Please check the path.")
 
-    # Check if there are any PDF files in the directory
     pdf_files = [f for f in os.listdir(pdf_directory) if f.endswith(".pdf")]
 
-    # If no PDFs found, download lecture notes
     if not pdf_files:
         print("No PDF files found. Downloading lecture notes...")
-        download_lecture_notes(pdf_directory)  # Download PDFs
-        pdf_files = [f for f in os.listdir(pdf_directory) if f.endswith(".pdf")]  # Re-check for PDFs
+        download_lecture_notes(pdf_directory)
+        pdf_files = [f for f in os.listdir(pdf_directory) if f.endswith(".pdf")]
 
-        # If still no PDFs, raise an error
         if not pdf_files:
             raise FileNotFoundError("No PDF files were found after downloading. Please check the download process.")
 
-    # List to hold all the documents from multiple PDFs
     all_documents = []
 
     # Loop through all the PDFs in the directory
@@ -37,21 +34,27 @@ def store_documents():
             with pdfplumber.open(pdf_path) as pdf:
                 for page in pdf.pages:
                     text = page.extract_text()
-                    if text:  # Check if the text was successfully extracted
+                    if text:  # Only process non-empty text
+                        print(f"Processing text from {pdf_file}, page {page.page_number}")
                         all_documents.append(Document(page_content=text))
+                    else:
+                        print(f"Warning: Empty text extracted from {pdf_file}, page {page.page_number}")
         except Exception as e:
             print(f"Error processing {pdf_file}: {e}")
 
+    if not all_documents:
+        raise ValueError("No valid documents were processed from the PDFs. Please check the PDF content.")
+
     # Create embeddings and store them in a vector database
     try:
-        embeddings = langchain_openai.OpenAIEmbeddings(
-            openai_api_key=os.getenv("OPENAI_API_KEY")
-        )
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            raise ValueError("OpenAI API key is missing. Please set it in your .env file.")
+
+        embeddings = langchain_openai.OpenAIEmbeddings(openai_api_key=api_key)
 
         # Initialize Chroma with the persist_directory argument to auto-save the vectorstore
-        vectorstore = Chroma.from_documents(all_documents, embeddings,
-                                            persist_directory="C:/Users/sweth/Tutorify-AI/source/vectorstore")
-
+        vectorstore = Chroma.from_documents(all_documents, embeddings, persist_directory=persist_directory)
         print("All PDFs have been successfully ingested and stored in the vector database.")
     except Exception as e:
         print(f"Error creating embeddings or storing them in the vectorstore: {e}")
