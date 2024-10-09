@@ -1,6 +1,9 @@
 openai
-requests
+requests~=2.32.3
 chromadb
-gradio  # or streamlit depending on the front-end
-python-dotenv
+gradio~=4.44.1
+python-dotenv~=1.0.1
 langchain_community
+langchain~=0.3.1
+beautifulsoup4~=4.12.3
+pdfplumber~=0.11.4
