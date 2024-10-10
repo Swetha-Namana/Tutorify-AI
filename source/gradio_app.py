@@ -1,42 +1,81 @@
 import gradio as gr
-from rag_pipeline import create_qa_chain  # Replace with your actual import
+import logging
+import traceback
+from rag_pipeline import create_qa_chain
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 # Create a QA chain instance
-qa_chain = create_qa_chain()
+try:
+    qa_chain = create_qa_chain()
+    if qa_chain is None:
+        logging.error("Failed to create QA chain. Exiting the application.")
+        exit(1)
+    else:
+        logging.info("QA chain initialized successfully.")
+except Exception as e:
+    logging.error(f"Exception occurred while creating QA chain: {e}")
+    logging.error(traceback.format_exc())
+    exit(1)
 
-
-def answer_query(history, query):
+def answer_query(user_input, history):
     """Function to handle user queries and return answers."""
     if qa_chain:
+        if history is None:
+            history = []
         try:
             # Run the QA chain and get the result
-            result = qa_chain.invoke({"query": query})
-            history.append((query, result['result']))
-            return history, history, ""
+            result = qa_chain({"question": user_input})
+            answer = result.get('answer', 'No response.')
+            # Append the new interaction to the chat history
+            history.append((user_input, answer))
+            return history, "", history
         except Exception as e:
-            history.append((query, f"Error during query execution: {e}"))
-            return history, history, ""
+            logging.error(f"Error during query execution: {e}")
+            logging.error(traceback.format_exc())
+            history.append((user_input, "An error occurred while processing your query. Please try again later."))
+            return history, "", history
     else:
-        return history, [("System", "QA chain is not initialized.")], ""
+        logging.error("QA chain is not initialized.")
+        history.append((user_input, "The QA system is currently unavailable."))
+        return history, "", history
 
+def reset_chat():
+    return [], "", []
 
-# Set up the Gradio interface with chatbot-like format
 with gr.Blocks() as iface:
     gr.Markdown("<h1 align='center'>AI Course Teaching Assistant Chatbot</h1>")
 
-    chatbot = gr.Chatbot(label="Chatbot")
-    query_input = gr.Textbox(label="Textbox", placeholder="Ask a question...")
+    chatbot = gr.Chatbot()
+    state = gr.State([])  # Initialize the chat history
 
     with gr.Row():
-        clear_button = gr.Button("Clear")
+        with gr.Column(scale=8):
+            user_input = gr.Textbox(
+                show_label=False,
+                placeholder="Ask a question...",
+                lines=1
+            )
+        with gr.Column(scale=2):
+            submit_button = gr.Button("Send")
 
+    with gr.Row():
+        clear_button = gr.Button("Clear Chat")
 
-    def reset_chat():
-        return [], []
+    submit_button.click(
+        answer_query,
+        inputs=[user_input, state],
+        outputs=[chatbot, user_input, state]
+    )
 
+    user_input.submit(
+        answer_query,
+        inputs=[user_input, state],
+        outputs=[chatbot, user_input, state]
+    )
 
-    query_input.submit(answer_query, [chatbot, query_input], [chatbot, chatbot, query_input])
-    clear_button.click(reset_chat, [], [chatbot, chatbot])
+    clear_button.click(reset_chat, outputs=[chatbot, user_input, state])
 
 if __name__ == "__main__":
     iface.launch()
