@@ -1,9 +1,9 @@
-openai
-requests~=2.32.3
+gradio
+requests
+beautifulsoup4
+python-dotenv
+pdfplumber
 chromadb
-gradio~=4.44.1
-python-dotenv~=1.0.1
-langchain_community
-langchain~=0.3.1
-beautifulsoup4~=4.12.3
-pdfplumber~=0.11.4
+langchain-chroma
+langchain-openai
+langchain-community
