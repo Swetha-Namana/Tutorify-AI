@@ -16,13 +16,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-     
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'  
+          python-version: '3.11'
 
-     
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -33,9 +31,14 @@ jobs:
           mkdir -p "lecture notes"
           mkdir -p "course_content"
 
-      
-      - name: Run application
+      - name: Run Gradio application
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          python source/gradio_app.py  
+          # Using 'nohup' to run the app in the background for testing purposes as we are not deploying to AWS yet
+          nohup python source/gradio_app.py &
+
+      - name: Check if the Gradio app is running
+        run: |
+          sleep 5
+          curl http://localhost:7860 || echo "Gradio app not running"
