@@ -78,4 +78,4 @@ with gr.Blocks() as iface:
     clear_button.click(reset_chat, outputs=[chatbot, user_input, state])
 
 if __name__ == "__main__":
-    iface.launch()
+    iface.launch(share=True)
