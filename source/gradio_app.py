@@ -78,4 +78,15 @@ with gr.Blocks() as iface:
     clear_button.click(reset_chat, outputs=[chatbot, user_input, state])
 
 if __name__ == "__main__":
-    iface.launch(share=True)
+    try:
+        share_info = iface.launch(share=True)
+        if share_info and 'share_url' in share_info:
+            logging.info(f"Shareable URL: {share_info['share_url']}")
+            print(f"Shareable URL: {share_info['share_url']}")
+        else:
+            logging.warning("Shareable URL was not generated.")
+            print("Shareable URL was not generated.")
+    except Exception as e:
+        logging.error(f"Failed to launch Gradio interface: {e}")
+        logging.error(traceback.format_exc())
+        print(f"Failed to launch Gradio interface: {e}")
