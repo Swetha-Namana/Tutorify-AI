@@ -1,4 +1,4 @@
-gradio
+gradio~=4.44.1
 requests
 beautifulsoup4
 python-dotenv
