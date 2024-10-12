@@ -79,7 +79,7 @@ with gr.Blocks() as iface:
 
 if __name__ == "__main__":
     try:
-        share_info = iface.launch(share=True, debug=True)
+        share_info = iface.launch(share=False)
         if share_info and 'share_url' in share_info:
             logging.info(f"Shareable URL: {share_info['share_url']}")
             print(f"Shareable URL: {share_info['share_url']}")
